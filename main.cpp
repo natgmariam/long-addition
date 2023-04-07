@@ -1,5 +1,4 @@
 /*
- Name: Natnael Gebremariam
  Description: Using threads to do long addition
  Input: a set of integers 
  Output: product of the input integers
@@ -70,9 +69,6 @@ void solve(int start, int end)
         mtxLock.lock();
         carryOver[i]=rem; 
         sum[i] = temp;  
-        //pushback the carryover first(1) & sum
-        //carryOver.push_back(rem); 
-        //sum.push_back(temp);
         mtxLock.unlock();
     }
 }
@@ -156,36 +152,14 @@ int main()
     string input1;
     string input2;
     
-    int power =  0; 
-    int maxThreads = 0; 
-    //max thread number 
-    while(true)
-    {   
-        if(thread::hardware_concurrency()>pow(2,power))
-        {
-            power++; 
-        }
-        else if(thread::hardware_concurrency()==pow(2,power))
-        {
-            maxThreads=pow(2,power);
-            break;  
-        }
-        else if(thread::hardware_concurrency()<pow(2,power))
-        {
-            maxThreads=pow(2,--power); 
-            break; 
-        }
+
+     //max thread number 
+    int maxThreads = 1;
+    int numThreads = std::thread::hardware_concurrency();
+
+    for (int i = 1; i < numThreads; i *= 2) {
+        maxThreads = i;
     }
-    // int maxThreads = 1;
-    // int numThreads = std::thread::hardware_concurrency();
-
-    // for (int i = 1; i < numThreads; i *= 2) {
-    //     maxThreads = i;
-    // }
-
-    // if (maxThreads < numThreads) {
-    //     maxThreads *= 2;
-    // }
     
     cout<<"Enter a number: ";
     cin >> input1; 
@@ -232,12 +206,14 @@ int main()
 
     return 0;
 }
-
+//input 1 
 //3377364598435445778809903612001058603382305856774546614102313493
 //8080212596483814704504943572350673964488834590322416825886403781
+//answer 1 
 //11457577194919260483314847184351732567871140447096963439988717274
 
-
+//input 2 
 //9999999999999999999999999999999999999999999999999999999999999999
 //0000000000000000000000000000000000000000000000000000000000000001
+//answer 2 
 //10000000000000000000000000000000000000000000000000000000000000000
